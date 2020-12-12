@@ -37,20 +37,21 @@
     "twitter-dl": "^1.0.6",
     "twitter-video-downloader": "^1.0.13",
     "video-url-link": "^0.1.5",
-    "youtube-dl": "^3.0.2"
+    "youtube-dl": "^3.0.2",
+	"dabi-images":"2.7.5",
   },
   "directories": {
     "lib": "lib"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mhankbarbar/whatsapp-bot.git"
+    "url": "git+https://github.com/iuha/whatsapp-bot.git"
   },
   "keywords": [
     "Whatsapp-Bot"
   ],
   "bugs": {
-    "url": "https://github.com/mhankbarbar/whatsapp-bot/issues"
+    "url": "https://github.com/iuha/whatsapp-bot/issues"
   },
-  "homepage": "https://github.com/mhankbarbar/whatsapp-bot#readme"
+  "homepage": "https://github.com/iuha/whatsapp-bot#readme"
 }
