@@ -38,7 +38,7 @@
     "twitter-video-downloader": "^1.0.13",
     "video-url-link": "^0.1.5",
     "youtube-dl": "^3.0.2",
-	"dabi-images":"^2.7.5",
+	"dabi-images":"^2.7.5"
   },
   "directories": {
     "lib": "lib"
