@@ -103,4 +103,4 @@ Fix Stuck on linux, install google chrome stable:
 * [`ItzNgga`](https://github.com/ItzNgga/wa-bot.js) 
 * [`Gimenz`](https://github.com/Gimenz) 
 * [`ArugaZ`](https://github.com/ArugaZ/whatsapp-bot) 
-* [`Tobz`] (https://github.com/TobyG74/ElainaBOT)
+* [`Tobz`](https://github.com/TobyG74/ElainaBOT)
