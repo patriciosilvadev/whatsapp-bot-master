@@ -15,8 +15,8 @@ const { getStickerMaker } = require('./lib/ttp');
 	
 const videoUrlLink = require('video-url-link');
 
-const fs1 = require('fs')
-const youtubedl = require('youtube-dl')
+const fs1 = require('fs');
+const youtubedl = require('youtube-dl');
 
 module.exports = msgHandler = async (client, message) => {
     try {
