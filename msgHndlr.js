@@ -22,7 +22,7 @@ const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromIma
 const DabiImages = require("dabi-images");
 const DabiClient = new DabiImages.Client();
 const rpgDiceRoller = require('rpg-dice-roller');
-const { getStickerMaker } = requirnpme('./lib/ttp');
+const { getStickerMaker } = require('./lib/ttp');
 const { 
     uploadImages, 
     custom,
