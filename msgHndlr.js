@@ -19,8 +19,8 @@ const { stdout } = require('process')
 const nsfw_ = JSON.parse(fs.readFileSync('./lib/NSFW.json'))
 const welkom = JSON.parse(fs.readFileSync('./lib/welcome.json'))
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg')
-const DabiImages = require("dabi-images");
-const DabiClient = new DabiImages.Client();
+const SRImages = require('./lib/subreddit-images');
+const SRImagesClient = new SRImages.Client();
 const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
 const { 
@@ -454,7 +454,7 @@ module.exports = msgHandler = async (client, message) => {
             break
 		// NSFW SECTION
 		case '!rpussy':
-			DabiClient.nsfw.real.pussy().then(json => {
+			SRImagesClient.nsfw.real.pussy().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff
@@ -464,7 +464,7 @@ module.exports = msgHandler = async (client, message) => {
 												});
             break
 		case '!ramateurs':
-			DabiClient.nsfw.real.amateurs().then(json => {
+			SRImagesClient.nsfw.real.amateurs().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff
@@ -474,7 +474,7 @@ module.exports = msgHandler = async (client, message) => {
 												});
             break
 		case '!rgonewild':
-			DabiClient.nsfw.real.gonewild().then(json => {
+			SRImagesClient.nsfw.real.gonewild().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff
@@ -484,7 +484,7 @@ module.exports = msgHandler = async (client, message) => {
 												});
             break
 		case '!rblowjob':
-			DabiClient.nsfw.real.blowjob().then(json => {
+			SRImagesClient.nsfw.real.blowjob().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff
@@ -494,7 +494,7 @@ module.exports = msgHandler = async (client, message) => {
 												});
             break 
 		case '!rasshole':
-			DabiClient.nsfw.real.asshole().then(json => {
+			SRImagesClient.nsfw.real.asshole().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff
@@ -504,7 +504,7 @@ module.exports = msgHandler = async (client, message) => {
 												});
             break 
 		case '!rboobs':
-			DabiClient.nsfw.real.boobs().then(json => {
+			SRImagesClient.nsfw.real.boobs().then(json => {
 													//console.log(json);
 													client.sendFileFromUrl(from, json.url);
 													// outputs data with image url, possible source and other stuff

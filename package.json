@@ -36,7 +36,7 @@
     "twitter-dl": "^1.0.6",
     "twitter-video-downloader": "^1.0.13",
     "video-url-link": "^0.1.5",
-    "youtube-dl": "^3.0.2",
+    "youtube-dl": "^3.0.2"
   },
   "directories": {
     "lib": "lib"
