@@ -1,6 +1,6 @@
 ## Information
 
-- [Cara Penginstallan Bot](https://youtu.be/41Xj_Kg4DCM)
+- [How to Install Bot (Is in Indonesian)](https://youtu.be/41Xj_Kg4DCM)
 - Change [ownerNumber](https://github.com/iuha/whatsapp-bot-master/blob/main/msgHndlr.js#L82) in msgHndlr.js to be your number
 ownerNumber = "6213xxxxxx@c.us"
 
