@@ -6,9 +6,6 @@ ownerNumber = "6213xxxxxx@c.us"
 
 ## Getting Started
 
-### This project require NodeJS v14.
-This is a Bot Group Type, so you have to enter the bot into a group in order to fully use the command!
-
 ### FFMPEG
 - [DOWNLOAD](https://ffmpeg.org/)
 - [TUTORIAL](https://youtu.be/04Gf6TEnmjk)
