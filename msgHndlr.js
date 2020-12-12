@@ -348,12 +348,12 @@ module.exports = msgHandler = async (client, message) => {
                 .then(respon => respon.json())
                 .then(resolt => {
                 	if (resolt.docs && resolt.docs.length <= 0) {
-                		client.reply(from, 'Maaf, saya tidak tau ini anime apa', id)
+                		client.reply(from, 'Sorry, I don\'t know what anime this is', id)
                 	}
                     const { is_adult, title, title_chinese, title_romaji, title_english, episode, similarity, filename, at, tokenthumb, anilist_id } = resolt.docs[0]
                     teks = ''
                     if (similarity < 0.92) {
-                    	teks = '*Saya memiliki keyakinan rendah dalam hal ini* :\n\n'
+                    	teks = '*I have low faith in this* :\n\n'
                     }
                     teks += `➸ *Title Japanese* : ${title}\n➸ *Title chinese* : ${title_chinese}\n➸ *Title Romaji* : ${title_romaji}\n➸ *Title English* : ${title_english}\n`
                     teks += `➸ *Ecchi* : ${is_adult}\n`
@@ -368,7 +368,7 @@ module.exports = msgHandler = async (client, message) => {
                     client.reply(from, 'Error !', id)
                 })
             } else {
-                client.sendFile(from, './media/img/tutod.jpg', 'Tutor.jpg', 'Neh contoh mhank!', id)
+                client.sendFile(from, './media/img/tutod.jpg', 'Tutor.jpg', 'Here\'s an example!', id)
             }
             break
         case '!linkgroup':
@@ -439,14 +439,6 @@ module.exports = msgHandler = async (client, message) => {
         //case '!sendto':
         //    client.sendFile(from, './msgHndlr.js', 'msgHndlr.js')
         //    break
-        case '!url2img':
-            const _query = body.slice(9)
-            if (!_query.match(isUrl)) return client.reply(from, mess.error.Iv, id)
-            if (args.length === 1) return client.reply(from, 'Kirim perintah *!url2img [web]*\nContoh *!url2img https://google.com*', id)
-            const url2img = await get.get(`https://mhankbarbar.herokuapp.com/api/url2image?url=${_query}&apiKey=${apiKey}`).json()
-            if (url2img.error) return client.reply(from, url2img.error, id)
-            client.sendFileFromUrl(from, url2img.result, 'kyaa.jpg', null, id)
-            break
         case '!meme':
             const response = await axios.get('https://meme-api.herokuapp.com/gimme/wtf');
             const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
