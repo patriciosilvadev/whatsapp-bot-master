@@ -4,7 +4,7 @@
   "engines": {
     "node": "12.x"
   },
-  "description": "THX FOR MHANKBARBAR FOR PROVIDING THE CODE, REEDIT BY iuha",
+  "description": "THX FOR MHANKBARBAR AND TOBZ FOR PROVIDING THE CODE, REEDIT BY iuha",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
