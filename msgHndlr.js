@@ -16,7 +16,7 @@ const { getStickerMaker } = require('./lib/ttp');
 	
 const videoUrlLink = require('video-url-link');
 
-const fs1 = require('fs');
+//const fs1 = require('fs');
 const youtubedl = require('youtube-dl');
 
 module.exports = msgHandler = async (client, message) => {
@@ -296,7 +296,7 @@ module.exports = msgHandler = async (client, message) => {
 						});
 					}
 				break
-			case '!yt':
+				case '!yt':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt http://www.youtube.com/watch?v=HVqCQLtgk04 *', id)
 				if (args.length === 2) {
 				   const ytlink = body.split(' ')[1]
@@ -305,19 +305,19 @@ module.exports = msgHandler = async (client, message) => {
 					  //['--format=18'],
 					  // Additional options can be given for calling `child_process.execFile()`.
 					  //{ cwd: __dirname }
-					  )
+					  );
 				   video.on('info', function(info) {
 										  console.log('Download started')
 										  console.log('filename: ' + info._filename)
 										  console.log('size: ' + info.size)
 										  
 										}
-							)
+							);
 					video.pipe(fs.createWriteStream('./media/ytoutput.mp4'));
 					video.on('end', function() {
 											client.sendFile(from,'./media/ytoutput.mp4','ytoutput.mp4','=]',id);
 										}
-							)
+							);
 				}
 				break
 			case '!wait':
