@@ -287,7 +287,7 @@ module.exports = msgHandler = async (client, message) => {
 															console.error(error);
 															client.reply(from, 'This link is not a video', id);
 														} else {
-															//var last = info.variants.length-1;
+															var last = info.variants.length-1;
 															//console.log(last);
 															//console.log(info.full_text);
 															//console.log(info.variants);
