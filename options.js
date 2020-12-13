@@ -11,7 +11,13 @@ module.exports = options = (headless, start) => {
         throwErrorOnTosBlock: false,
         args: [
             '--no-sandbox',
-        ],
+            '--disable-setuid-sandbox',
+            '--aggressive-cache-discard',
+            '--disable-cache',
+            '--disable-application-cache',
+            '--disable-offline-load-stale-cache',
+            '--disk-cache-size=0'
+        ]
     }
     return options
 }
