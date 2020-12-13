@@ -6,10 +6,10 @@ module.exports = options = (headless, start) => {
         authTimeout: 0,
         restartOnCrash: start,
         cacheEnabled: false,
-        useChrome: false,
+        useChrome: true,
         killProcessOnBrowserClose: true,
         throwErrorOnTosBlock: false,
-        args: [
+        chromiumArgs: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--aggressive-cache-discard',
