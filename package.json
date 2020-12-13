@@ -26,6 +26,7 @@
     "video-url-link": "^0.1.5",
     "youtube-dl": "^3.0.2",
 	"moment-timezone": "^0.5.31"
+	"gify-cli":"^1.0.2"
   },
   "directories": {
     "lib": "lib"
