@@ -15,7 +15,7 @@ const SRImagesClient = new SRImages.Client();
 const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
-
+const Downloader = require('./lib/downloader');
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -119,7 +119,7 @@ module.exports = msgHandler = async (client, message) => {
 					const url = body.split(' ')[1];
 					if (is.Giphy(url)) {
 						const getGiphyCode = url.match(new RegExp(/(\/|\-)(?:.(?!(\/|\-)))+$/, 'gi'))
-						if (!getGiphyCode) { return client.reply(from, 'Gagal mengambil kode giphy', id) }
+						if (!getGiphyCode) { return client.reply(from, 'Failed to retrieve the giphy code', id) }
 						const giphyCode = getGiphyCode[0].replace(/[-\/]/gi, '')
 						const smallGifUrl = 'https://media.giphy.com/media/' + giphyCode + '/giphy-downsized.gif'
 						client.sendGiphyAsSticker(from, smallGifUrl).then(() => {
@@ -127,7 +127,7 @@ module.exports = msgHandler = async (client, message) => {
 						}).catch((err) => console.log(err))
 					} else if (is.MediaGiphy(url)) {
 						const gifUrl = url.match(new RegExp(/(giphy|source).(gif|mp4)/, 'gi'))
-						if (!gifUrl) { return client.reply(from, 'Gagal mengambil kode giphy', id) }
+						if (!gifUrl) { return client.reply(from, 'Failed to retrieve the giphy code', id) }
 						const smallGifUrl = url.replace(gifUrl[0], 'giphy-downsized.gif')
 						client.sendGiphyAsSticker(from, smallGifUrl).then(() => {
 							client.reply(from, 'Here\'s your sticker')
@@ -140,29 +140,26 @@ module.exports = msgHandler = async (client, message) => {
 			case '!vid2sticker':
 				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
 				if (args.length === 2) {
+					const download = new Downloader();
 					const url = body.split(' ')[1];
-					axios.get(url, {responseType: "stream"} )  
-									.then(response => {
-										console.log(response);
-										}, (error) => {
-										  console.log(error);
+					axios.get(url, {responseType: "stream"}).then(response => {
+										//console.log(response.headers['content-type']);
+										const fileType = response.headers['content-type'];
+										const ext = fileType ? fileType.split('/').pop() : undefined;
+										//console.log(ext);
+										if(ext === 'webm' || ext === 'gif' || ext === 'mp4'){
+											const dest = './media/';
+											
+											download.get(url,dest);
+										}
 										});
-										//response.data.pipe(fs.createWriteStream('./media/'));  
-									})
-					if (isMedia) {
-						if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
-							const mediaData = await decryptMedia(message, uaOverride)
-							client.reply(from, '[WAIT] In progress⏳ please wait ± 1 min!', id)
-							const filename = `./media/aswu.${mimetype.split('/')[1]}`
-							await fs.writeFileSync(filename, mediaData)
-							await exec(`gify ${filename} ./media/output.gif --fps=30 --scale=240:240`, async function (error, stdout, stderr) {
-								const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" })
-								await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
-							})
-						} else (
-							client.reply(from, '[❗] Send a video with the caption *!stickergif * max 10 sec!', id)
-						)
-					}
+					download.on('done', (dst) => {
+						let fileName = './'+dst;
+						exec(`gify ${fileName} ./media/output.gif --fps=30 --scale=240:240`, async function (error, stdout, stderr) {
+											const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" });
+											await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`);
+											});
+					});
 				}
 				break
 			case '!stickernobg':
@@ -328,24 +325,6 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, '[ WRONG ] Send the command *!nh [code]*')
 				}
 				break
-				/* case '!tw':
-				if (args.length === 1) return client.reply(from, 'Send command *!tw [link] *, example *!tw https://twitter.com/i/status/1337276001546432513 *', id)
-				if (args.length === 2) {
-					const twlink = body.split(' ')[1]
-					videoUrlLink.twitter.getInfo(twlink, {}, (error, info) => {
-														if (error) {
-															console.error(error);
-															client.reply(from, 'This link is not a video', id);
-														} else {
-															var last = info.variants.length-1;
-															//console.log(last);
-															//console.log(info.full_text);
-															//console.log(info.variants);
-															client.sendFileFromUrl(from,info.variants[last].url,'output.mp4','=]',id);
-														}
-						});
-					}
-				break */
 			case '!tw':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
 				if (args.length === 2) {
