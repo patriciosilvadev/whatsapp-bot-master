@@ -13,11 +13,8 @@ const SRImages = require('./lib/subreddit-images');
 const SRImagesClient = new SRImages.Client();
 const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
-	
-const videoUrlLink = require('video-url-link');
-
-//const fs1 = require('fs');
 const youtubedl = require('youtube-dl');
+
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -278,7 +275,7 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, '[ WRONG ] Send the command *!nh [code]*')
 				}
 				break
-			case '!tw':
+				/* case '!tw':
 				if (args.length === 1) return client.reply(from, 'Send command *!tw [link] *, example *!tw https://twitter.com/i/status/1337276001546432513 *', id)
 				if (args.length === 2) {
 					const twlink = body.split(' ')[1]
@@ -295,8 +292,32 @@ module.exports = msgHandler = async (client, message) => {
 														}
 						});
 					}
-				break
-				case '!yt':
+				break */
+			case '!tw':
+				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
+				if (args.length === 2) {
+				   const twlink = body.split(' ')[1]
+				   const video = youtubedl(twlink
+					  // Optional arguments passed to youtube-dl.
+					  //['--format=18'],
+					  // Additional options can be given for calling `child_process.execFile()`.
+					  //{ cwd: __dirname }
+					  );
+				   video.on('info', function(info) {
+										  console.log('Download started')
+										  console.log('filename: ' + info._filename)
+										  console.log('size: ' + info.size)
+										  
+										}
+							);
+					video.pipe(fs.createWriteStream('./media/twoutput.mp4'));
+					video.on('end', function() {
+											client.sendFile(from,'./media/twoutput.mp4','twoutput.mp4','=]',id);
+										}
+							);
+				}
+				break	
+			case '!yt':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt http://www.youtube.com/watch?v=HVqCQLtgk04 *', id)
 				if (args.length === 2) {
 				   const ytlink = body.split(' ')[1]
