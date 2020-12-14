@@ -113,7 +113,7 @@ module.exports = msgHandler = async (client, message) => {
 					)
 				}
 				break
-			case '!giphysticker':
+			case '!giphy2sticker':
 				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
 				if (args.length === 2) {
 					const url = body.split(' ')[1];
@@ -136,7 +136,35 @@ module.exports = msgHandler = async (client, message) => {
 						await client.reply(from, 'sorry, for now gif stickers can only use the link from giphy  [Giphy Only]', id)
 					}
 				}
-				break	
+				break
+			case '!vid2sticker':
+				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
+				if (args.length === 2) {
+					const url = body.split(' ')[1];
+					axios.get(url, {responseType: "stream"} )  
+									.then(response => {
+										console.log(response);
+										}, (error) => {
+										  console.log(error);
+										});
+										//response.data.pipe(fs.createWriteStream('./media/'));  
+									})
+					if (isMedia) {
+						if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
+							const mediaData = await decryptMedia(message, uaOverride)
+							client.reply(from, '[WAIT] In progress⏳ please wait ± 1 min!', id)
+							const filename = `./media/aswu.${mimetype.split('/')[1]}`
+							await fs.writeFileSync(filename, mediaData)
+							await exec(`gify ${filename} ./media/output.gif --fps=30 --scale=240:240`, async function (error, stdout, stderr) {
+								const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" })
+								await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
+							})
+						} else (
+							client.reply(from, '[❗] Send a video with the caption *!stickergif * max 10 sec!', id)
+						)
+					}
+				}
+				break
 			case '!stickernobg':
 			case '!stikernobg':
 			case '!snobg':
