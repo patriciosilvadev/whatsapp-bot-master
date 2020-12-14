@@ -1,14 +1,15 @@
-const { decryptMedia } = require('@open-wa/wa-decrypt')
-const fs = require('fs-extra')
-const get = require('got')
-const fetch = require('node-fetch')
-const moment = require('moment-timezone')
-const color = require('./lib/color')
-const { spawn, exec } = require('child_process')
-const { liriklagu, quotemaker, randomNimek, fb, sleep, jadwalTv, ss } = require('./lib/functions')
-const { help, readme } = require('./lib/help')
-const { stdout } = require('process')
-const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg')
+const { decryptMedia } = require('@open-wa/wa-decrypt');
+const fs = require('fs-extra');
+const axios = require('axios');
+const get = require('got');
+const fetch = require('node-fetch');
+const moment = require('moment-timezone');
+const color = require('./lib/color');
+const { spawn, exec } = require('child_process');
+const { liriklagu, fb, sleep, ss, is } = require('./lib/functions');
+const { help, readme } = require('./lib/help');
+const { stdout } = require('process');
+const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg');
 const SRImages = require('./lib/subreddit-images');
 const SRImagesClient = new SRImages.Client();
 const rpgDiceRoller = require('rpg-dice-roller');
@@ -112,6 +113,30 @@ module.exports = msgHandler = async (client, message) => {
 					)
 				}
 				break
+			case '!giphysticker':
+				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
+				if (args.length === 2) {
+					const url = body.split(' ')[1];
+					if (is.Giphy(url)) {
+						const getGiphyCode = url.match(new RegExp(/(\/|\-)(?:.(?!(\/|\-)))+$/, 'gi'))
+						if (!getGiphyCode) { return client.reply(from, 'Gagal mengambil kode giphy', id) }
+						const giphyCode = getGiphyCode[0].replace(/[-\/]/gi, '')
+						const smallGifUrl = 'https://media.giphy.com/media/' + giphyCode + '/giphy-downsized.gif'
+						client.sendGiphyAsSticker(from, smallGifUrl).then(() => {
+							client.reply(from, 'Here\'s your sticker')
+						}).catch((err) => console.log(err))
+					} else if (is.MediaGiphy(url)) {
+						const gifUrl = url.match(new RegExp(/(giphy|source).(gif|mp4)/, 'gi'))
+						if (!gifUrl) { return client.reply(from, 'Gagal mengambil kode giphy', id) }
+						const smallGifUrl = url.replace(gifUrl[0], 'giphy-downsized.gif')
+						client.sendGiphyAsSticker(from, smallGifUrl).then(() => {
+							client.reply(from, 'Here\'s your sticker')
+						}).catch((err) => console.log(err))
+					} else {
+						await client.reply(from, 'sorry, for now gif stickers can only use the link from giphy  [Giphy Only]', id)
+					}
+				}
+				break	
 			case '!stickernobg':
 			case '!stikernobg':
 			case '!snobg':
@@ -209,7 +234,7 @@ module.exports = msgHandler = async (client, message) => {
 				client.sendFile(from, './media/img/hello.jpg', 'Goatsie.jpg', 'NSFW', id)
 				break
 			case '!tts':
-				if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+				if (!isGroupMsg) return client.reply(from, 'This command can only be used in group!', id)
 				try {
 					if (args.length === 1) return client.reply(from, 'Send command *!tts [Language] [Text]*, for example *!tts pt-br oi como vai voce*')
 					var dataBhs = args[1]      
@@ -423,11 +448,13 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, 'Invalid group link!', id)
 				}
 				break
-			/*case '!meme':
-				const response = await axios.get('https://meme-api.herokuapp.com/gimme/wtf');
+			case '!meme':
+				const subreddits = ['dankmemes', 'wholesomeanimemes', 'wholesomememes', 'AdviceAnimals', 'MemeEconomy', 'memes', 'terriblefacebookmemes', 'teenagers', 'historymemes']
+				const randSub = subreddits[Math.random() * subreddits.length | 0]
+				const response = await axios.get('https://meme-api.herokuapp.com/gimme/' + randSub);
 				const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
 				client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
-				break*/
+				break
 			// NSFW SECTION
 			case '!rpussy':
 				SRImagesClient.nsfw.real.pussy().then(json => {
