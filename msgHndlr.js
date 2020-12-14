@@ -114,6 +114,7 @@ module.exports = msgHandler = async (client, message) => {
 				}
 				break
 			case '!giphy2sticker':
+			case '!g2s':
 				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
 				if (args.length === 2) {
 					const url = body.split(' ')[1];
@@ -138,12 +139,14 @@ module.exports = msgHandler = async (client, message) => {
 				}
 				break
 			case '!vid2sticker':
+			case '!v2s':
 				if (args.length === 1) return client.reply(from, 'Sorry, the message format is wrong, please check the menu. [Wrong Format]', id)
 				if (args.length === 2) {
 					const download = new Downloader();
 					const url = body.split(' ')[1];
 					axios.get(url, {responseType: "stream"}).then(response => {
 										//console.log(response.headers['content-type']);
+										//console.log(response);
 										const fileType = response.headers['content-type'];
 										const ext = fileType ? fileType.split('/').pop() : undefined;
 										//console.log(ext);
@@ -151,15 +154,16 @@ module.exports = msgHandler = async (client, message) => {
 											const dest = './media/';
 											
 											download.get(url,dest);
-										}
+										} 
 										});
-					download.on('done', (dst) => {
+					 download.on('done', (dst) => {
 						let fileName = './'+dst;
-						exec(`gify ${fileName} ./media/output.gif --fps=30 --scale=240:240`, async function (error, stdout, stderr) {
+						exec(`gify ${fileName} ./media/output.gif --fps=30 --scale=240:240 --time 6`, async function (error, stdout, stderr) {
 											const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" });
-											await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`);
+											await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`).catch((err) => console.log(err));
 											});
-					});
+						
+					}); 
 				}
 				break
 			case '!stickernobg':
