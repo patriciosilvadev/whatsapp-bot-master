@@ -16,6 +16,7 @@ const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
 const Downloader = require('./lib/downloader');
+var m3u8ToMp4 = require("m3u8-to-mp4");
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -104,7 +105,7 @@ module.exports = msgHandler = async (client, message) => {
 						client.reply(from, '[WAIT] In progress⏳ please wait ± 1 min!', id)
 						const filename = `./media/aswu.${mimetype.split('/')[1]}`
 						await fs.writeFileSync(filename, mediaData)
-						await exec(`gify ${filename} ./media/output.gif --fps=30 --scale=240:240`, async function (error, stdout, stderr) {
+						await exec(`gify ${filename} ./media/output.gif --fps=30 --scale=240:240 --time 6`, async function (error, stdout, stderr) {
 							const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" })
 							await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
 						})
@@ -375,6 +376,32 @@ module.exports = msgHandler = async (client, message) => {
 											client.sendFile(from,'./media/ytoutput.mp4','ytoutput.mp4','=]',id);
 										}
 							);
+				}
+				break
+			case '!xvideos':
+				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
+				if (args.length === 2) {
+				   const download = new Downloader();
+				   var converter = new m3u8ToMp4();
+				   const xvlink = body.split(' ')[1];
+				   youtubedl.getInfo(xvlink,function(err, info) {
+													  if (err) throw err
+
+													  console.log('id:', info.id)
+													  console.log('title:', info.title)
+													  console.log('url:', info.url)
+													  console.log('thumbnail:', info.thumbnail)
+													  console.log('description:', info.description)
+													  console.log('filename:', info._filename)
+													  console.log('format id:', info.format_id)
+													  converter
+															  .setInputFile(info.url)
+															  .setOutputFile("dummy.mp4")
+															  .start()
+															  .then(() => {
+																console.log("File converted");
+															  });
+													});
 				}
 				break
 			case '!wait':
