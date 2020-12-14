@@ -378,7 +378,7 @@ module.exports = msgHandler = async (client, message) => {
 							);
 				}
 				break
-			case '!xvideos':
+/* 			case '!xvideos':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
 				if (args.length === 2) {
 				   const download = new Downloader();
@@ -404,7 +404,7 @@ module.exports = msgHandler = async (client, message) => {
 															  });
 													});
 				}
-				break
+				break */
 			case '!wait':
 				if (isMedia && type === 'image' || quotedMsg && quotedMsg.type === 'image') {
 					if (isMedia) {
