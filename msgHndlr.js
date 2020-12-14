@@ -154,7 +154,7 @@ module.exports = msgHandler = async (client, message) => {
 											const dest = './media/';
 											
 											download.get(url,dest);
-										} 
+										}else return client.reply(from,'wrong video format');
 										});
 					 download.on('done', (dst) => {
 						let fileName = './'+dst;
