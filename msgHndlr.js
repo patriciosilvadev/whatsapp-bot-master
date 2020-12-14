@@ -400,6 +400,7 @@ module.exports = msgHandler = async (client, message) => {
 															  .start()
 															  .then(() => {
 																console.log("File converted");
+																client.sendFile(from,'./media/dummy.mp4','dummy.mp4','=]',id);
 															  });
 													});
 				}
