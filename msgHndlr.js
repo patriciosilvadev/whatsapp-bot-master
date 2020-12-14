@@ -396,7 +396,7 @@ module.exports = msgHandler = async (client, message) => {
 													  console.log('format id:', info.format_id)
 													  converter
 															  .setInputFile(info.url)
-															  .setOutputFile("dummy.mp4")
+															  .setOutputFile("./media/dummy.mp4")
 															  .start()
 															  .then(() => {
 																console.log("File converted");
