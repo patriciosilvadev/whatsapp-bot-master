@@ -497,7 +497,7 @@ module.exports = msgHandler = async (client, message) => {
 				client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
 				break
 			case '!ramador':
-				client.sendFile(from, './media/img/amador.jpeg', 'M.Amador.jpeg', 'NSFW', id)
+				client.sendFile(from, './media/img/amador.png', 'M.Amador.png', 'NSFW', id)
 				break
 // ######################################################################################################				
 // ######################################################################################################
