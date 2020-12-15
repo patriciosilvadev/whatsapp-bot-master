@@ -11,7 +11,7 @@ const { help, readme } = require('./lib/help');
 const { stdout } = require('process');
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg');
 const SRImages = require('./lib/subreddit-images');
-const SRImagesClient = new SRImages.Client();
+const SRImagesClient = new SRImages.SRClientNSFW();
 const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
@@ -496,7 +496,7 @@ module.exports = msgHandler = async (client, message) => {
 				break
 			// NSFW SECTION
 			case '!rpussy':
-				SRImagesClient.nsfw.real.pussy().then(json => {
+				SRImagesClient.real.pussy().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
@@ -507,7 +507,7 @@ module.exports = msgHandler = async (client, message) => {
 													});
 				break
 			case '!ramateurs':
-				SRImagesClient.nsfw.real.amateurs().then(json => {
+				SRImagesClient.real.amateurs().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
@@ -521,7 +521,7 @@ module.exports = msgHandler = async (client, message) => {
 				client.sendFile(from, './media/img/amador.jpeg', 'M.Amador.jpeg', 'NSFW', id)
 				break
 			case '!rgonewild':
-				SRImagesClient.nsfw.real.gonewild().then(json => {
+				SRImagesClient.real.gonewild().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
@@ -532,7 +532,7 @@ module.exports = msgHandler = async (client, message) => {
 													});
 				break
 			case '!rblowjob':
-				SRImagesClient.nsfw.real.blowjob().then(json => {
+				SRImagesClient.real.blowjob().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
@@ -543,7 +543,7 @@ module.exports = msgHandler = async (client, message) => {
 													});
 				break 
 			case '!rasshole':
-				SRImagesClient.nsfw.real.asshole().then(json => {
+				SRImagesClient.real.asshole().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
@@ -554,7 +554,7 @@ module.exports = msgHandler = async (client, message) => {
 													});
 				break 
 			case '!rboobs':
-				SRImagesClient.nsfw.real.boobs().then(json => {
+				SRImagesClient.real.boobs().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
