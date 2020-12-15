@@ -528,9 +528,6 @@ module.exports = msgHandler = async (client, message) => {
 														// outputs error
 													});
 				break
-			case '!ramador':
-				client.sendFile(from, './media/img/amador.jpeg', 'M.Amador.jpeg', 'NSFW', id)
-				break
 			case '!rgonewild':
 				SRImagesClient.nsfw.real.gonewild().then(json => {
 														//console.log(json);
