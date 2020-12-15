@@ -496,7 +496,7 @@ module.exports = msgHandler = async (client, message) => {
 				break
 			// NSFW SECTION
 			case '!rpussy':
-				SRImagesClient.real.pussy().then(json => {
+				SRImagesClient.pussy().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
