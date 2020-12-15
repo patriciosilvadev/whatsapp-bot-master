@@ -496,6 +496,9 @@ module.exports = msgHandler = async (client, message) => {
 				const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
 				client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
 				break
+			case '!ramador':
+				client.sendFile(from, './media/img/amador.jpeg', 'M.Amador.jpeg', 'NSFW', id)
+				break
 // ######################################################################################################				
 // ######################################################################################################
 // ######################################################################################################
