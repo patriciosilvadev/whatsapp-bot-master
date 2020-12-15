@@ -12,7 +12,7 @@ const { stdout } = require('process');
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg');
 
 const SRImages = require('./lib/subreddit-images');
-const SRImagesClient = new SRImages.SRClient();
+const SRImagesClient = new SRImages.Client();
 
 const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
