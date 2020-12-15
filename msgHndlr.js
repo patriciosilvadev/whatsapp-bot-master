@@ -514,7 +514,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
@@ -525,7 +524,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
@@ -539,7 +537,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
@@ -550,7 +547,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
@@ -561,7 +557,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
@@ -572,7 +567,6 @@ module.exports = msgHandler = async (client, message) => {
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
 													}).catch(error => {
-														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
 														console.log(error);
 														// outputs error
 													});
