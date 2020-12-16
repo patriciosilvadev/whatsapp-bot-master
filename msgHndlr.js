@@ -11,6 +11,9 @@ const { help, readme } = require('./lib/help');
 const { stdout } = require('process');
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg');
 
+const nhentai = require('nhentai-js')
+const { API } = require('nhentai-api')
+
 const SRImages = require('./lib/subreddit-images');
 const SRImagesClient = new SRImages.Client();
 
@@ -19,6 +22,12 @@ const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
 const Downloader = require('./lib/downloader');
 var m3u8ToMp4 = require("m3u8-to-mp4");
+
+const getNH = async (nuklir) => {
+	
+}
+
+
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -292,46 +301,6 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, `You rolled: ${roller}`, id);
 				}
 				break
-			case '!nh':
-				//if (isGroupMsg) return client.reply(from, 'Sorry this command for private chat only!', id)
-				if (args.length === 2) {
-					const nuklir = body.split(' ')[1]
-					client.reply(from, mess.wait, id)
-					const cek = await nhentai.exists(nuklir)
-					if (cek === true)  {
-						try {
-							const api = new API()
-							const pic = await api.getBook(nuklir).then(book => {
-								return api.getImageURL(book.cover)
-							})
-							const dojin = await nhentai.getDoujin(nuklir)
-							const { title, details, link } = dojin
-							const { parodies, tags, artists, groups, languages, categories } = await details
-							var teks = `*Title* : ${title}\n\n*Parodies* : ${parodies}\n\n*Tags* : ${tags.join(', ')}\n\n*Artists* : ${artists.join(', ')}\n\n*Groups* : ${groups.join(', ')}\n\n*Languages* : ${languages.join(', ')}\n\n*Categories* : ${categories}\n\n*Link* : ${link}`
-							//exec('nhentai --id=' + nuklir + ` -P mantap.pdf -o ./hentong/${nuklir}.pdf --format `+ `${nuklir}.pdf`, (error, stdout, stderr) => {
-							client.sendFileFromUrl(from, pic, 'hentod.jpg', teks, id)
-								//client.sendFile(from, `./hentong/${nuklir}.pdf/${nuklir}.pdf.pdf`, then(() => `${title}.pdf`, '', id)).catch(() => 
-								//client.sendFile(from, `./hentong/${nuklir}.pdf/${nuklir}.pdf.pdf`, `${title}.pdf`, '', id))
-								/*if (error) {
-									console.log('error : '+ error.message)
-									return
-								}
-								if (stderr) {
-									console.log('stderr : '+ stderr)
-									return
-								}
-								console.log('stdout : '+ stdout)*/
-								//})
-						} catch (err) {
-							client.reply(from, '[❗] Something went wrong, maybe the nuclear code is wrong', id)
-						}
-					} else {
-						client.reply(from, '[❗] NuClear Code Incorrect!')
-					}
-				} else {
-					client.reply(from, '[ WRONG ] Send the command *!nh [code]*')
-				}
-				break
 			case '!tw':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
 				if (args.length === 2) {
@@ -374,39 +343,17 @@ module.exports = msgHandler = async (client, message) => {
 										}
 							);
 					video.pipe(fs.createWriteStream('./media/ytoutput.mp4'));
-					video.on('end', function() {
+					try{
+						video.on('end', function() {
 											client.sendFile(from,'./media/ytoutput.mp4','ytoutput.mp4','=]',id);
 										}
 							);
+					}catch{
+							client.reply(from,'Desculpe, não foi possível enviar. Falha Catastrófica.',id);
+							console.log(error);
+					};
 				}
 				break
-/* 			case '!xvideos':
-				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
-				if (args.length === 2) {
-				   const download = new Downloader();
-				   var converter = new m3u8ToMp4();
-				   const xvlink = body.split(' ')[1];
-				   youtubedl.getInfo(xvlink,function(err, info) {
-													  if (err) throw err
-
-													  console.log('id:', info.id)
-													  console.log('title:', info.title)
-													  console.log('url:', info.url)
-													  console.log('thumbnail:', info.thumbnail)
-													  console.log('description:', info.description)
-													  console.log('filename:', info._filename)
-													  console.log('format id:', info.format_id)
-													  converter
-															  .setInputFile(info.url)
-															  .setOutputFile("./media/dummy.mp4")
-															  .start()
-															  .then(() => {
-																console.log("File converted");
-																client.sendFile(from,'./media/dummy.mp4','dummy.mp4','=]',id);
-															  });
-													});
-				}
-				break */
 			case '!wait':
 				if (isMedia && type === 'image' || quotedMsg && quotedMsg.type === 'image') {
 					if (isMedia) {
@@ -503,14 +450,81 @@ module.exports = msgHandler = async (client, message) => {
 // ######################################################################################################
 // ######################################################################################################
 // ######################################################################################################
+// ############################################## NSFW SECTION ##########################################
 // ######################################################################################################
 // ######################################################################################################
 // ######################################################################################################
 // ######################################################################################################
 // ######################################################################################################
-// ######################################################################################################
-
-			// NSFW SECTION
+			case '!nh':
+				//if (isGroupMsg) return client.reply(from, 'Sorry this command for private chat only!', id)
+				if (args.length === 2) {
+					const nuklir = body.split(' ')[1]
+					client.reply(from, mess.wait, id)
+					const cek = await nhentai.exists(nuklir)
+					if (cek === true)  {
+						try {
+							const api = new API()
+							const pic = await api.getBook(nuklir).then(book => {
+								return api.getImageURL(book.cover)
+							})
+							const dojin = await nhentai.getDoujin(nuklir)
+							const { title, details, link } = dojin
+							const { parodies, tags, artists, groups, languages, categories } = await details
+							var teks = `*Title* : ${title}\n\n*Parodies* : ${parodies}\n\n*Tags* : ${tags.join(', ')}\n\n*Artists* : ${artists.join(', ')}\n\n*Groups* : ${groups.join(', ')}\n\n*Languages* : ${languages.join(', ')}\n\n*Categories* : ${categories}\n\n*Link* : ${link}`
+							//exec('nhentai --id=' + nuklir + ` -P mantap.pdf -o ./hentong/${nuklir}.pdf --format `+ `${nuklir}.pdf`, (error, stdout, stderr) => {
+							client.sendFileFromUrl(from, pic, 'hentod.jpg', teks, id)
+								//client.sendFile(from, `./hentong/${nuklir}.pdf/${nuklir}.pdf.pdf`, then(() => `${title}.pdf`, '', id)).catch(() => 
+								//client.sendFile(from, `./hentong/${nuklir}.pdf/${nuklir}.pdf.pdf`, `${title}.pdf`, '', id))
+								/*if (error) {
+									console.log('error : '+ error.message)
+									return
+								}
+								if (stderr) {
+									console.log('stderr : '+ stderr)
+									return
+								}
+								console.log('stdout : '+ stdout)*/
+								//})
+						} catch (err) {
+							client.reply(from, '[❗] Something went wrong, maybe the nuclear code is wrong', id)
+						}
+					} else {
+						
+						client.reply(from, '[❗] NuClear Code Incorrect!')
+					}
+				} else {
+						/* const response =  axios.get('https://nhentai.net/random/').then(function(response){
+						//var nuklir1 = response.request.path.substring(3, response.request.path.length - 1);
+						//const nuklir = nuklir1.toString();
+						const nuklir = "5970";
+						client.reply(from, mess.wait, id)
+						
+						const cek = nhentai.exists(nuklir)
+						if (cek === true)  {
+							try {
+								const api = new API()
+								const pic = api.getBook(nuklir).then(book => {
+									return api.getImageURL(book.cover)
+								});
+								const dojin = nhentai.getDoujin(nuklir)
+								const { title, details, link } = dojin
+								const { parodies, tags, artists, groups, languages, categories } = details
+								var teks = `*Title* : ${title}\n\n*Parodies* : ${parodies}\n\n*Tags* : ${tags.join(', ')}\n\n*Artists* : ${artists.join(', ')}\n\n*Groups* : ${groups.join(', ')}\n\n*Languages* : ${languages.join(', ')}\n\n*Categories* : ${categories}\n\n*Link* : ${link}`
+								client.sendFileFromUrl(from, pic, 'hentod.jpg', teks, id)
+								
+							} catch (err) {
+								client.reply(from, '[❗] Something went wrong, maybe the nuclear code is wrong', id)
+							}
+						} else {
+							
+							client.reply(from, '[❗] NuClear Code Incorrect!')
+						}
+					client.reply(from, '*[ NH ] RANDOM!*')  
+					}); */
+					client.reply(from, '[ WRONG ] Digite *!nh [nuClear]*')
+				}
+				break
 			case '!rpussy':
 				SRImagesClient.real.pussy().then(json => {
 														//console.log(json);
@@ -570,6 +584,39 @@ module.exports = msgHandler = async (client, message) => {
 				break 
 			case '!rboobs':
 				SRImagesClient.real.boobs().then(json => {
+														//console.log(json);
+														client.sendFileFromUrl(from, json.url);
+														// outputs data with image url, possible source and other stuff
+													}).catch(error => {
+														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
+														console.log(error);
+														// outputs error
+													});
+				break
+			case '!rr':
+				SRImagesClient.real.random().then(json => {
+														//console.log(json);
+														client.sendFileFromUrl(from, json.url);
+														// outputs data with image url, possible source and other stuff
+													}).catch(error => {
+														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
+														console.log(error);
+														// outputs error
+													});
+				break
+			case '!rthighs':
+				SRImagesClient.real.thighs().then(json => {
+														//console.log(json);
+														client.sendFileFromUrl(from, json.url);
+														// outputs data with image url, possible source and other stuff
+													}).catch(error => {
+														client.reply(from,'Desculpe, não foi possível enviar a imagem. Repita o comando',id);
+														console.log(error);
+														// outputs error
+													});
+				break
+			case '!rpanties':
+				SRImagesClient.real.panties().then(json => {
 														//console.log(json);
 														client.sendFileFromUrl(from, json.url);
 														// outputs data with image url, possible source and other stuff
