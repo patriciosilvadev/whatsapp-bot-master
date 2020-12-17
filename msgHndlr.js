@@ -82,6 +82,12 @@ module.exports = msgHandler = async (client, message) => {
         if (isBlocked) return
         if (!isOwner) return
         switch(command) {
+			
+// ######################################################################################################
+// ######################################################################################################
+// #################################     STICKER FUNCTIONS    ###########################################
+// ######################################################################################################
+// ######################################################################################################			
 			case '!sticker':
 			case '!stiker':
 			case '!s':
@@ -119,7 +125,7 @@ module.exports = msgHandler = async (client, message) => {
 							await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
 						})
 					} else (
-						client.reply(from, '[❗] Send a video with the caption *!stickergif * max 10 sec!', id)
+						client.reply(from, '[❗] Send a video with the caption *!stickergif * max 06 sec!', id)
 					)
 				}
 				break
@@ -248,6 +254,12 @@ module.exports = msgHandler = async (client, message) => {
 						console.log(error)
 					}
 				break;
+				
+// ######################################################################################################
+// ######################################################################################################
+// #################################        BAKA ONLY         ###########################################
+// ######################################################################################################
+// ######################################################################################################		
 			case '!sexta':
 				if (!isBaka) return client.reply(from, 'Você não é o Baka!', id)
 				client.sendFile(from, './media/videos/sexta.mp4', 'sexta.mp4', '*HOJE É SEXTA FEIRA!!*', id)
@@ -267,27 +279,15 @@ module.exports = msgHandler = async (client, message) => {
 				await sleep(1000)
 				await client.sendTextWithMentions(from, heho)
 				break
-			case '!cu':
-				client.sendFile(from, './media/img/hello.jpg', 'Goatsie.jpg', 'NSFW', id)
-				break
-			case '!tts':
-				if (!isGroupMsg) return client.reply(from, 'This command can only be used in group!', id)
-				try {
-					if (args.length === 1) return client.reply(from, 'Send command *!tts [Language] [Text]*, for example *!tts pt-br oi como vai voce*')
-					var dataBhs = args[1]      
-					const ttsHZ = require('node-gtts')(dataBhs)
-					var dataText = body.slice(8)
-					if (dataText === '') return client.reply(from, 'Enter the text', id)
-					if (dataText.length > 500) return client.reply(from, 'Text is too long!', id)
-					var dataBhs = body.slice(5, 7)
-					ttsHZ.save('./media/tts.mp3', dataText, function () {
-					client.sendPtt(from, './media/tts.mp3', id)
-					})
-				} catch (err){
-					console.log(err)
-					client.reply(from, bahasa_list, id)
-				}
-				break
+		
+				
+// ######################################################################################################
+// ######################################################################################################
+// #################################     RPG ROLL    ####################################################
+// ######################################################################################################
+// ######################################################################################################						
+				
+				
 			case '!roll':
 				if (args.length == 1) return client.reply(from, 'Send command *!roll [dice] *, example *!roll 1d20 *', id)
 				if (args.length === 2) {
@@ -297,6 +297,12 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, `You rolled: ${roller}`, id);
 				}
 				break
+				
+// ######################################################################################################
+// ######################################################################################################
+// #################################     YOUTUBE E TWITTER VIDEO DOWNLOADER    ##########################
+// ######################################################################################################
+// ######################################################################################################		
 			case '!tw':
 				if (args.length === 1) return client.reply(from, 'Send command *!yt [link] *, example *!yt https://twitter.com/i/status/1337276001546432513 *', id)
 				if (args.length === 2) {
@@ -397,6 +403,12 @@ module.exports = msgHandler = async (client, message) => {
 				const lirik = await liriklagu(lagu)
 				client.reply(from, lirik, id)
 				break
+				
+// ######################################################################################################				
+// ######################################################################################################
+// #################################     RANDOM IMAGE E MEMES        ####################################
+// ######################################################################################################
+// ######################################################################################################							
 			case '!cao':
 				const dog = await fetch('https://random.dog/woof.json',{ headers: { 'User-Agent': 'meu pau de binoculo' } })
 				const resultDog = await dog.json()
@@ -413,6 +425,46 @@ module.exports = msgHandler = async (client, message) => {
 				q3 = Math.floor(Math.random() * 1500) + 200;
 				client.sendFileFromUrl(from, 'https://www.placemonkeys.com/'+q3+'/'+q2+'?random')
 				break
+			case '!meme':
+				const subreddits = ['dankmemes', 'wholesomeanimemes', 'wholesomememes', 'AdviceAnimals', 'MemeEconomy', 'memes', 'terriblefacebookmemes', 'teenagers', 'historymemes']
+				const randSub = subreddits[Math.random() * subreddits.length | 0]
+				const response = await axios.get('https://meme-api.herokuapp.com/gimme/' + randSub);
+				const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
+				client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
+				break
+			case '!ramador':
+				client.sendFile(from, './media/img/amador.png', 'M.Amador.png', 'NSFW', id);
+				break
+						case '!cu':
+				client.sendFile(from, './media/img/hello.jpg', 'Goatsie.jpg', 'NSFW', id)
+				break
+			case '!tts':
+				if (!isGroupMsg) return client.reply(from, 'This command can only be used in group!', id)
+				try {
+					if (args.length === 1) return client.reply(from, 'Send command *!tts [Language] [Text]*, for example *!tts pt-br oi como vai voce*')
+					var dataBhs = args[1]      
+					const ttsHZ = require('node-gtts')(dataBhs)
+					var dataText = body.slice(8)
+					if (dataText === '') return client.reply(from, 'Enter the text', id)
+					if (dataText.length > 500) return client.reply(from, 'Text is too long!', id)
+					var dataBhs = body.slice(5, 7)
+					ttsHZ.save('./media/tts.mp3', dataText, function () {
+					client.sendPtt(from, './media/tts.mp3', id)
+					})
+				} catch (err){
+					console.log(err)
+					client.reply(from, bahasa_list, id)
+				}
+				break
+
+				
+// ######################################################################################################				
+// ######################################################################################################
+// #################################     JOIN VIA LINK        ###########################################
+// ######################################################################################################
+// ######################################################################################################				
+			
+			
 			case '!join':
 				//return client.reply(from, 'Jika ingin meng-invite bot ke group anda, silahkan izin ke wa.me/6285892766102', id)
 				if (args.length < 2) return client.reply(from, 'Send the command *!join linkgroup key * \ n \ nEx: \ n!join https://chat.whatsapp.com/blablablablablabla abcde \ nfor the key you can get it for only 5k donations', id)
@@ -432,16 +484,12 @@ module.exports = msgHandler = async (client, message) => {
 					client.reply(from, 'Invalid group link!', id)
 				}
 				break
-			case '!meme':
-				const subreddits = ['dankmemes', 'wholesomeanimemes', 'wholesomememes', 'AdviceAnimals', 'MemeEconomy', 'memes', 'terriblefacebookmemes', 'teenagers', 'historymemes']
-				const randSub = subreddits[Math.random() * subreddits.length | 0]
-				const response = await axios.get('https://meme-api.herokuapp.com/gimme/' + randSub);
-				const { postlink, title, subreddit, url, nsfw, spoiler } = response.data
-				client.sendFileFromUrl(from, `${url}`, 'meme.jpg', `${title}`)
-				break
-			case '!ramador':
-				client.sendFile(from, './media/img/amador.png', 'M.Amador.png', 'NSFW', id);
-				break
+			
+// ######################################################################################################				
+// ######################################################################################################
+// #################################     4CHAN        ###################################################
+// ######################################################################################################
+// ######################################################################################################				
 			case '!4chan':
 				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link] *', id)
 				if (args.length === 2) {
@@ -469,6 +517,11 @@ module.exports = msgHandler = async (client, message) => {
 					   client.sendFileFromUrl(from, urlteste, 'video.webm', '')
 				}
 				break
+// ######################################################################################################				
+// ######################################################################################################
+// #################################     LOTERIAS     ###################################################
+// ######################################################################################################
+// ######################################################################################################
 			case '!megasena':
 				if (args.length === 1) {
 					lottery
