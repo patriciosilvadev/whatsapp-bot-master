@@ -1,0 +1,49 @@
+{
+  "name": "4chan-list-webm",
+  "version": "0.0.0-development",
+  "description": "Generate a list of webms posted in a 4chan thread",
+  "main": "./index.js",
+  "author": "scootykins <scootykins@yahoo.com>",
+  "license": "MIT",
+  "keywords": [
+    "4chan",
+    "webm",
+    "download",
+    "json",
+    "4webm",
+    "video",
+    "thegame"
+  ],
+  "scripts": {
+    "fix": "eslint . --fix",
+    "lint": "eslint .",
+    "watch": "nyc mocha --watch",
+    "test": "yarn run lint && nyc mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scootykins/4chan-list-webm.git"
+  },
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.2",
+    "dirty-chai": "^2.0.1",
+    "eslint": "^5.4.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "mocha": "^5.0.0",
+    "nock": "^9.6.1",
+    "nyc": "^11.7.1",
+    "semantic-release": "^15.9.12",
+    "travis-deploy-once": "^5.0.4"
+  }
+}

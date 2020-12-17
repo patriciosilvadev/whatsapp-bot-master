@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 const moment = require('moment-timezone');
 const color = require('./lib/color');
 const { spawn, exec } = require('child_process');
-const { liriklagu, fb, sleep, ss, is } = require('./lib/functions');
+const { sleep, is } = require('./lib/functions');
 const { help, readme } = require('./lib/help');
 const { stdout } = require('process');
 const { RemoveBgResult, removeBackgroundFromImageBase64, removeBackgroundFromImageFile } = require('remove.bg');
@@ -23,11 +23,7 @@ const youtubedl = require('youtube-dl');
 const Downloader = require('./lib/downloader');
 var m3u8ToMp4 = require("m3u8-to-mp4");
 
-const getNH = async (nuklir) => {
-	
-}
-
-
+const listMedia = require('./lib/4chan-list-media')
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -82,7 +78,7 @@ module.exports = msgHandler = async (client, message) => {
         //if (!isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname))
         //if (isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname), 'in', color(formattedTitle))
         if (isBlocked) return
-        //if (!isOwner) return
+        if (!isOwner) return
         switch(command) {
 			case '!sticker':
 			case '!stiker':
@@ -255,10 +251,8 @@ module.exports = msgHandler = async (client, message) => {
 				client.sendFile(from, './media/videos/sexta.mp4', 'sexta.mp4', '*HOJE É SEXTA FEIRA!!*', id)
 				break
 			case '!sextaespecial':
-				if (!isBaka) return client.reply(from, 'Você não é o Baka!', id)
-				//client.sendFile(from,'./media/img/sexta.png','sexta.png',id)
+				if (!isBaka) return client.reply(from, 'Você não é o Baka, nem o dono!', id)
 				client.sendFile(from, './media/videos/sextaespecial.mp4', id)
-				//client.sendYoutubeLink(from, 'https://www.youtube.com/watch?v=yO-vHfQB_4o','*HOJE É SEXTA FEIRA!!*')
 				const amaroneto = await fs.readFileSync('./media/videos/amaroneto.gif', { encoding: "base64" })
 				await client.sendImageAsSticker(from, `data:image/gif;base64,${amaroneto.toString('base64')}`)
 				const groupMek = await client.getGroupMembers(groupId)
@@ -445,6 +439,33 @@ module.exports = msgHandler = async (client, message) => {
 				break
 			case '!ramador':
 				client.sendFile(from, './media/img/amador.png', 'M.Amador.png', 'NSFW', id);
+				break
+			case '!4chan':
+				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link] *', id)
+				if (args.length === 2) {
+					   const url4chan = body.split(' ')[1]
+					try {
+						const data = await listMedia(url4chan)
+							//console.log('4chan thread: ' + data.media.subject + ' ( '+data.media.length+' files)');
+							client.sendText(from,'4chan thread: ' + data.media.subject + ' ( '+data.media.length+' Images)');
+							for (let i = 0; i < data.media.length; i++) {
+								await client.sendFileFromUrl(from, data.media[i].url, data.media[i].filename, '')
+								//console.log(i + ' | ' + data.media[i].filename + ' | ' + data.media[i].url);
+								await sleep(400);
+							}
+							client.sendText(from,'*END OF THREAD*'); 
+							
+						} catch (err) {
+							console.error('Whoa! 404! :c', err)
+						}
+				}
+				break
+			case '!teste':
+				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link] *', id)
+				if (args.length === 2) {
+					   const urlteste = body.split(' ')[1]
+					   client.sendFileFromUrl(from, urlteste, 'video.webm', '')
+				}
 				break
 // ######################################################################################################				
 // ######################################################################################################

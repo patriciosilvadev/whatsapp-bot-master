@@ -15,6 +15,7 @@
   "dependencies": {
     "@open-wa/wa-automate": "^3.1.6",
     "@open-wa/wa-decrypt": "^2.0.1",
+    "4chan-list-webm": "^4.1.2",
     "axios": "^0.19.2",
     "ffmpeg": "^0.0.4",
     "fs-extra": "^9.0.1",
