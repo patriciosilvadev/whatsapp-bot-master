@@ -25,6 +25,8 @@ var m3u8ToMp4 = require("m3u8-to-mp4");
 
 const listMedia = require('./lib/4chan-list-media')
 
+const lottery = require('loterias-caixa-scraper')
+
 module.exports = msgHandler = async (client, message) => {
     try {
         const { type, id, from, t, sender, isGroupMsg, chat, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -445,7 +447,7 @@ module.exports = msgHandler = async (client, message) => {
 				if (args.length === 2) {
 					   const url4chan = body.split(' ')[1]
 					try {
-						const data = await listMedia(url4chan)
+							const data = await listMedia(url4chan)
 							//console.log('4chan thread: ' + data.media.subject + ' ( '+data.media.length+' files)');
 							client.sendText(from,'4chan thread: ' + data.media.subject + ' ( '+data.media.length+' Images)');
 							for (let i = 0; i < data.media.length; i++) {
@@ -461,10 +463,116 @@ module.exports = msgHandler = async (client, message) => {
 				}
 				break
 			case '!teste':
-				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link] *', id)
+				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link]*', id)
 				if (args.length === 2) {
 					   const urlteste = body.split(' ')[1]
 					   client.sendFileFromUrl(from, urlteste, 'video.webm', '')
+				}
+				break
+			case '!megasena':
+				if (args.length === 1) {
+					lottery
+						  .resultByNumber('megasena')
+						  .then((result) => {
+								let resultado = '';
+								resultado +='*RESULTADO MEGA-SENA*\n'; 
+								resultado +='*Concurso nº:* '+ result.numberRaffle+'\n'; 
+								resultado +='*Números Sorteados:* '+ result.unorNumbers+'\n'; 
+								resultado +='*Valor total:* R$'+result.totalCollection+'\n';
+								resultado +='*Data do sorteio:* '+ result.date+'\n';
+								resultado +='*Ganhadores:*\n';
+								resultado +='*Sena*: '+result.sena.winers+' *Ganho por Jogador:* R$'+result.sena.prizeByWinner+'\n';
+								resultado +='*Quina*: '+result.quina.winers+' *Ganho por Jogador:* R$'+result.quina.prizeByWinner+'\n';
+								resultado +='*Quadra*: '+result.quadra.winers+' *Ganho por Jogador:* R$'+result.quadra.prizeByWinner+'\n';
+								if (result.isAccumulated){
+									resultado +='*Acumulado p/ próximo concurso*: R$'+ result.nextRaffle.accumulated+'\n';
+								} else resultado +='Sem acúmulo.\n';
+								resultado +='*Data próximo concurso*: '+ result.nextRaffle.date+'\n';
+								resultado +='*MEGA DA VIRADA*: R$'+ result.accumulatedMegavirada+'\n';
+								client.sendText(from,resultado);
+							//console.log(result)
+						  }).catch((e) => {
+								console.log(e)
+								})
+				}
+				if (args.length === 2) {
+					lottery
+						  .resultByNumber('megasena',body.split(' ')[1])
+						  .then((result) => {
+								let resultado = '';
+								resultado +='*RESULTADO MEGA-SENA*\n'; 
+								resultado +='*Concurso nº:* '+ result.numberRaffle+'\n'; 
+								resultado +='*Números Sorteados:* '+ result.unorNumbers+'\n'; 
+								resultado +='*Valor total:* R$'+result.totalCollection+'\n';
+								resultado +='*Data do sorteio:* '+ result.date+'\n';
+								resultado +='*Ganhadores:*\n';
+								resultado +='*Sena*: '+result.sena.winers+' *Ganho por Jogador:* R$'+result.sena.prizeByWinner+'\n';
+								resultado +='*Quina*: '+result.quina.winers+' *Ganho por Jogador:* R$'+result.quina.prizeByWinner+'\n';
+								resultado +='*Quadra*: '+result.quadra.winers+' *Ganho por Jogador:* R$'+result.quadra.prizeByWinner+'\n';
+								if (result.isAccumulated){
+									resultado +='*Acumulado p/ próximo concurso*: R$'+ result.nextRaffle.accumulated+'\n';
+								} else resultado +='Sem acúmulo.\n';
+								resultado +='*Data próximo concurso*: '+ result.nextRaffle.date+'\n';
+								resultado +='*MEGA DA VIRADA*: R$'+ result.accumulatedMegavirada+'\n';
+								client.sendText(from,resultado);
+							//console.log(result)
+						  }).catch((e) => {
+								console.log(e)
+								})
+				}
+				break
+				case '!quina':
+				if (args.length === 1) {
+					lottery
+						  .resultByNumber('quina')
+						  .then((result) => {
+								let resultado = '';
+								resultado +='*RESULTADO QUINA*\n'; 
+								resultado +='*Concurso nº:* '+ result.numberRaffle+'\n'; 
+								resultado +='*Números Sorteados:* '+ result.unorNumbers+'\n'; 
+								resultado +='*Valor total:* R$'+result.totalCollection+'\n';
+								resultado +='*Data do sorteio:* '+ result.date+'\n';
+								resultado +='*Ganhadores:*\n';
+								resultado +='*Quina*: '+result.quina.winers+' *Ganho por Jogador:* R$'+result.quina.prizeByWinner+'\n';
+								resultado +='*Quadra*: '+result.quadra.winers+' *Ganho por Jogador:* R$'+result.quadra.prizeByWinner+'\n';
+								resultado +='*Terno*: '+result.terno.winers+' *Ganho por Jogador:* R$'+result.terno.prizeByWinner+'\n';
+								resultado +='*Duque*: '+result.duque.winers+' *Ganho por Jogador:* R$'+result.duque.prizeByWinner+'\n';
+								if (result.isAccumulated){
+									resultado +='*Acumulado p/ próximo concurso*: R$'+ result.nextRaffle.accumulated+'\n';
+								} else resultado +='Sem acúmulo.\n';
+								resultado +='*Data próximo concurso*: '+ result.nextRaffle.date+'\n';
+								resultado +='*QUINA DE SÃO JOÃO*: R$'+ result.accumulatedSaoJoao+'\n';
+								client.sendText(from,resultado);
+							//console.log(result)
+						  }).catch((e) => {
+								console.log(e)
+								})
+				}
+				if (args.length === 2) {
+					lottery
+						  .resultByNumber('quina',body.split(' ')[1])
+						  .then((result) => {
+								let resultado = '';
+								resultado +='*RESULTADO QUINA*\n'; 
+								resultado +='*Concurso nº:* '+ result.numberRaffle+'\n'; 
+								resultado +='*Números Sorteados:* '+ result.unorNumbers+'\n'; 
+								resultado +='*Valor total:* R$'+result.totalCollection+'\n';
+								resultado +='*Data do sorteio:* '+ result.date+'\n';
+								resultado +='*Ganhadores:*\n';
+								resultado +='*Quina*: '+result.quina.winers+' *Ganho por Jogador:* R$'+result.quina.prizeByWinner+'\n';
+								resultado +='*Quadra*: '+result.quadra.winers+' *Ganho por Jogador:* R$'+result.quadra.prizeByWinner+'\n';
+								resultado +='*Terno*: '+result.terno.winers+' *Ganho por Jogador:* R$'+result.terno.prizeByWinner+'\n';
+								resultado +='*Duque*: '+result.duque.winers+' *Ganho por Jogador:* R$'+result.duque.prizeByWinner+'\n';
+								if (result.isAccumulated){
+									resultado +='*Acumulado p/ próximo concurso*: R$'+ result.nextRaffle.accumulated+'\n';
+								} else resultado +='Sem acúmulo.\n';
+								resultado +='*Data próximo concurso*: '+ result.nextRaffle.date+'\n';
+								resultado +='*QUINA DE SÃO JOÃO*: R$'+ result.accumulatedSaoJoao+'\n';
+								client.sendText(from,resultado);
+							//console.log(result)
+						  }).catch((e) => {
+								console.log(e)
+								})
 				}
 				break
 // ######################################################################################################				
@@ -477,6 +585,7 @@ module.exports = msgHandler = async (client, message) => {
 // ######################################################################################################
 // ######################################################################################################
 // ######################################################################################################
+
 			case '!nh':
 				//if (isGroupMsg) return client.reply(from, 'Sorry this command for private chat only!', id)
 				if (args.length === 2) {

@@ -21,6 +21,7 @@
     "fs-extra": "^9.0.1",
     "gify-cli": "^1.0.2",
     "got": "^11.7.0",
+    "loterias-caixa-scraper": "^0.2.1",
     "m3u8-to-mp4": "^1.0.0",
     "moment-timezone": "^0.5.31",
     "nhentai-api": "^3.0.2",
