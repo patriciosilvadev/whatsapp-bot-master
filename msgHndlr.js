@@ -92,6 +92,7 @@ module.exports = msgHandler = async (client, message) => {
 			case '!clima':
 					//if (args.length >= 1){
 						const cidade = body.slice(8);
+						console.log(cidade);
 						fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherAPIKEY}&q=${cidade}&lang=pt`)
 									.then((response) => response.json())
 									.then((data) => {
