@@ -21,14 +21,11 @@ const rpgDiceRoller = require('rpg-dice-roller');
 const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
 const Downloader = require('./lib/downloader');
-var m3u8ToMp4 = require("m3u8-to-mp4");
+let m3u8ToMp4 = require("m3u8-to-mp4");
 const listMedia = require('./lib/4chan-list-media')
 const lottery = require('loterias-caixa-scraper')
-let weather = require('openweather-apis');
 
-weather.setAPPID('062b8f59356515b619f8e20c1336c36a');
-weather.setLang('en');
-weather.setUnits('metric');
+let weatherAPIKEY = '0eda7b4c932b441bb1030821201812';
 
 
 module.exports = msgHandler = async (client, message) => {
@@ -84,48 +81,56 @@ module.exports = msgHandler = async (client, message) => {
         //if (!isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname))
         //if (isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname), 'in', color(formattedTitle))
         if (isBlocked) return
-        if (!isOwner) return
+        //if (!isOwner) return
         switch(command) {
 // ######################################################################################################
 // ######################################################################################################
-// #################################     WEATHER FUNCTIONS    ###########################################
+// #################################     WEATHER       ##################################################
 // ######################################################################################################
 // ######################################################################################################			
 			
 			case '!clima':
 					if (args.length === 2){
-					const cidade = args[1];
-					weather.setCity(cidade);
-					weather.getAllWeather(function(err, JSONObj){
-								let resultado = '';
-								resultado += '*Cidade:* '+ JSONObj.name+'\n';
-								resultado += '*Temperatura*: '+ JSONObj.main.temp +'Cº\n';
-								resultado += '*Sensação Térmica:* '+ JSONObj.main.feels_like +'Cº\n';
-								resultado += '*Temperatura Mínima:* '+ JSONObj.main.temp_min +'Cº\n';
-								resultado += '*Temperatura Máxima:* '+ JSONObj.main.temp_max +'Cº\n';
-								resultado += '*Humidade:* '+ JSONObj.main.humidity +'\%\n';
-								client.sendText(from,resultado);
-								
-								console.log(JSONObj);
-							});
-					}
-					if (args.length === 3) {
 						const cidade = args[1];
-						const dias = args[2];
-						weather.setCity(cidade);
-						weather.getWeatherForecastForDays(dias,function(err, JSONObj){
-								/* let resultado = '';
-								resultado += '*Cidade:* '+ JSONObj.name+'\n';
-								resultado += '*Temperatura*: '+ JSONObj.main.temp +'Cº\n';
-								resultado += '*Sensação Térmica:* '+ JSONObj.main.feels_like +'Cº\n';
-								resultado += '*Temperatura Mínima:* '+ JSONObj.main.temp_min +'Cº\n';
-								resultado += '*Temperatura Máxima:* '+ JSONObj.main.temp_max +'Cº\n';
-								resultado += '*Humidade:* '+ JSONObj.main.humidity +'\%\n';
+						fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherAPIKEY}&q=${cidade}&lang=pt`)
+									.then((response) => response.json())
+									.then((data) => {
+											//console.log(data);
+											let resultado = '*METEOROLOGIA*\n';
+											resultado += '*Cidade:* '+ data['location']['name'] + ' - ' + data['location']['region'] + ' - ' + data['location']['country'] +'\n';
+											resultado += '*Data/Hora:* ' + data['location']['localtime']+'\n';
+											resultado += '*Temperatura*: '+ data['current']['temp_c'] +'Cº\n';
+											resultado += '*Sensação Térmica:* '+ data['current']['feelslike_c'] +'Cº\n';
+											resultado += '*Humidade:* '+ data['current']['humidity'] +'\%\n';
+											resultado += '*Céu:* ' + data['current']['condition']['text'] +'\n'; 
+											client.sendText(from,resultado); 
+									})
+									.catch((err) => console.log(err));
+						
+						/* 		let resultado = '*PREVISÃO DO TEMPO*\n';
+								resultado += '*Cidade:* '+ JSONObj['location']['name'] +'\n';
+								//resultado += '*Dia:* ' + JSONObj.current.day+'\n';
+								//resultado += '*Temperatura*: '+ JSONObj.current.temperature +'Cº\n';
+								//resultado += '*Sensação Térmica:* '+ JSONObj.current.feelslike +'Cº\n';
+								//resultado += '*Humidade:* '+ JSONObj.current.humidity +'\%\n';
+								//resultado += '*Ventos:* ' + JSONObj.current.winddisplay +'\n';
 								client.sendText(from,resultado); */
+					
+					}else if (args.length === 3) {
+								/* const cidade = args[1];
+								const dias = args[2];
+								fetch(
+										`http://api.weatherapi.com/v1/forecast.json?key=${weatherAPIKEY}&q=${cidade}&days=${dias}&lang=pt`
+									)
+										.then((response) => response.json())
+										.then((data) => console.log(data.forecast.forecastday[0]))
+										.catch((err) => console.log(err));
 								
-								console.log(JSONObj);
-							});
-					}
+						 */		client.sendText(from,'Forecast not yet available');
+								}
+								else {
+									client.sendText(from,'Comando errado.');
+								}
 						
 				break
 			
