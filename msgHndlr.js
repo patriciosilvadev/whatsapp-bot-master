@@ -90,7 +90,7 @@ module.exports = msgHandler = async (client, message) => {
 // ######################################################################################################			
 			
 			case '!clima':
-					if (args.length > 1){
+					//if (args.length >= 1){
 						const cidade = body.slice(8);
 						fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherAPIKEY}&q=${cidade}&lang=pt`)
 									.then((response) => response.json())
@@ -116,7 +116,7 @@ module.exports = msgHandler = async (client, message) => {
 								//resultado += '*Ventos:* ' + JSONObj.current.winddisplay +'\n';
 								client.sendText(from,resultado); */
 					
-					}else if (args.length === 3) {
+					//}/* else if (args.length === 3) {
 								/* const cidade = args[1];
 								const dias = args[2];
 								fetch(
@@ -126,11 +126,11 @@ module.exports = msgHandler = async (client, message) => {
 										.then((data) => console.log(data.forecast.forecastday[0]))
 										.catch((err) => console.log(err));
 								
-						 */		client.sendText(from,'Forecast not yet available');
+								client.sendText(from,'Forecast not yet available');
 								}
 								else {
 									client.sendText(from,'Comando errado.');
-								}
+								} */
 						
 				break
 			
