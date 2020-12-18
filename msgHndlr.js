@@ -91,8 +91,7 @@ module.exports = msgHandler = async (client, message) => {
 			
 			case '!clima':
 					//if (args.length >= 1){
-						const cidade = body.slice(8);
-						console.log(cidade);
+						const cidade = body.slice(7);
 						fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherAPIKEY}&q=${cidade}&lang=pt`)
 									.then((response) => response.json())
 									.then((data) => {
@@ -106,7 +105,7 @@ module.exports = msgHandler = async (client, message) => {
 											resultado += '*Céu:* ' + data['current']['condition']['text'] +'\n'; 
 											client.sendText(from,resultado); 
 									})
-									.catch((err) => console.log(err));
+									.catch((err) => {console.log(err); client.sendText(from,err););
 						
 						/* 		let resultado = '*PREVISÃO DO TEMPO*\n';
 								resultado += '*Cidade:* '+ JSONObj['location']['name'] +'\n';
