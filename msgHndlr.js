@@ -22,10 +22,14 @@ const { getStickerMaker } = require('./lib/ttp');
 const youtubedl = require('youtube-dl');
 const Downloader = require('./lib/downloader');
 var m3u8ToMp4 = require("m3u8-to-mp4");
-
 const listMedia = require('./lib/4chan-list-media')
-
 const lottery = require('loterias-caixa-scraper')
+let weather = require('openweather-apis');
+
+weather.setAPPID('062b8f59356515b619f8e20c1336c36a');
+weather.setLang('en');
+weather.setUnits('metric');
+
 
 module.exports = msgHandler = async (client, message) => {
     try {
@@ -82,6 +86,48 @@ module.exports = msgHandler = async (client, message) => {
         if (isBlocked) return
         if (!isOwner) return
         switch(command) {
+// ######################################################################################################
+// ######################################################################################################
+// #################################     WEATHER FUNCTIONS    ###########################################
+// ######################################################################################################
+// ######################################################################################################			
+			
+			case '!clima':
+					if (args.length === 2){
+					const cidade = args[1];
+					weather.setCity(cidade);
+					weather.getAllWeather(function(err, JSONObj){
+								let resultado = '';
+								resultado += '*Cidade:* '+ JSONObj.name+'\n';
+								resultado += '*Temperatura*: '+ JSONObj.main.temp +'Cº\n';
+								resultado += '*Sensação Térmica:* '+ JSONObj.main.feels_like +'Cº\n';
+								resultado += '*Temperatura Mínima:* '+ JSONObj.main.temp_min +'Cº\n';
+								resultado += '*Temperatura Máxima:* '+ JSONObj.main.temp_max +'Cº\n';
+								resultado += '*Humidade:* '+ JSONObj.main.humidity +'\%\n';
+								client.sendText(from,resultado);
+								
+								console.log(JSONObj);
+							});
+					}
+					if (args.length === 3) {
+						const cidade = args[1];
+						const dias = args[2];
+						weather.setCity(cidade);
+						weather.getWeatherForecastForDays(dias,function(err, JSONObj){
+								/* let resultado = '';
+								resultado += '*Cidade:* '+ JSONObj.name+'\n';
+								resultado += '*Temperatura*: '+ JSONObj.main.temp +'Cº\n';
+								resultado += '*Sensação Térmica:* '+ JSONObj.main.feels_like +'Cº\n';
+								resultado += '*Temperatura Mínima:* '+ JSONObj.main.temp_min +'Cº\n';
+								resultado += '*Temperatura Máxima:* '+ JSONObj.main.temp_max +'Cº\n';
+								resultado += '*Humidade:* '+ JSONObj.main.humidity +'\%\n';
+								client.sendText(from,resultado); */
+								
+								console.log(JSONObj);
+							});
+					}
+						
+				break
 			
 // ######################################################################################################
 // ######################################################################################################
