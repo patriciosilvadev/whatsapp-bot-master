@@ -105,7 +105,7 @@ module.exports = msgHandler = async (client, message) => {
 											resultado += '*Céu:* ' + data['current']['condition']['text'] +'\n'; 
 											client.sendText(from,resultado); 
 									})
-									.catch((err) => {console.log(err); client.sendText(from,err););
+									.catch((err) => {console.log(err); client.sendText(from,err);});
 						
 						/* 		let resultado = '*PREVISÃO DO TEMPO*\n';
 								resultado += '*Cidade:* '+ JSONObj['location']['name'] +'\n';
