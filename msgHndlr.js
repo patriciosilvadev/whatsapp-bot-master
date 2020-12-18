@@ -550,6 +550,7 @@ module.exports = msgHandler = async (client, message) => {
 // ######################################################################################################
 // ######################################################################################################				
 			case '!4chan':
+				if (!isOwner) return client.reply(from, 'Você não é o dono. Por enquanto só o dono!', id)
 				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link] *', id)
 				if (args.length === 2) {
 					   const url4chan = body.split(' ')[1]
