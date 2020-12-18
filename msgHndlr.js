@@ -136,7 +136,6 @@ module.exports = msgHandler = async (client, message) => {
 						} else {
 							client.reply(from, '[❗] Send a video with the caption *!stickergif * max 06 sec!', id)
 						}
-				
 				break
 			case '!giphy2sticker':
 			case '!g2s':
