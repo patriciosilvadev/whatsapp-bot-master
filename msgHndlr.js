@@ -114,8 +114,7 @@ module.exports = msgHandler = async (client, message) => {
 			case '!stickergif':
 			case '!stikergif':
 			case '!sgif':
-				if (isMedia) {
-					if (mimetype === 'video/mp4' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
+				if (isMedia && type === 'video' && message.duration < 10 || mimetype === 'image/gif' && message.duration < 10) {
 						const mediaData = await decryptMedia(message, uaOverride)
 						client.reply(from, '[WAIT] In progress⏳ please wait ± 1 min!', id)
 						const filename = `./media/aswu.${mimetype.split('/')[1]}`
@@ -124,10 +123,20 @@ module.exports = msgHandler = async (client, message) => {
 							const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" })
 							await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
 						})
-					} else (
-						client.reply(from, '[❗] Send a video with the caption *!stickergif * max 06 sec!', id)
-					)
-				}
+				} else if (quotedMsg && quotedMsg.type == 'video' && quotedMsg.duration < 10){
+							const mediaData = await decryptMedia(quotedMsg, uaOverride)
+							client.reply(from, '[WAIT] In progress⏳ please wait ± 1 min!', id)
+							const filename = `./media/aswu.${quotedMsg.mimetype.split('/')[1]}`
+							await fs.writeFileSync(filename, mediaData)
+							await exec(`gify ${filename} ./media/output.gif --fps=30 --scale=240:240 --time 6`, async function (error, stdout, stderr) {
+								const gif = await fs.readFileSync('./media/output.gif', { encoding: "base64" })
+								await client.sendImageAsSticker(from, `data:image/gif;base64,${gif.toString('base64')}`)
+							})
+							
+						} else {
+							client.reply(from, '[❗] Send a video with the caption *!stickergif * max 06 sec!', id)
+						}
+				
 				break
 			case '!giphy2sticker':
 			case '!g2s':
