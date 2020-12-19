@@ -25,7 +25,9 @@ let m3u8ToMp4 = require("m3u8-to-mp4");
 const listMedia = require('./lib/4chan-list-media')
 const lottery = require('loterias-caixa-scraper')
 
-let weatherAPIKEY = '0eda7b4c932b441bb1030821201812';
+//let weatherAPIKEY = '0eda7b4c932b441bb1030821201812';
+
+const puppeteer = require('puppeteer');
 
 
 module.exports = msgHandler = async (client, message) => {
@@ -81,7 +83,7 @@ module.exports = msgHandler = async (client, message) => {
         //if (!isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname))
         //if (isGroupMsg && !command.startsWith('!')) console.log('\x1b[1;33m~\x1b[1;37m>', '[\x1b[1;31mMSG\x1b[1;37m]', time, color(body), 'from', color(pushname), 'in', color(formattedTitle))
         if (isBlocked) return
-        //if (!isOwner) return
+        if (!isOwner) return
         switch(command) {
 // ######################################################################################################
 // ######################################################################################################
@@ -90,48 +92,44 @@ module.exports = msgHandler = async (client, message) => {
 // ######################################################################################################			
 			
 			case '!clima':
-					//if (args.length >= 1){
+					let widgetElement = '';
+					let browser = '';
+					let page = '';
+					if (args.length >= 1){
+						client.reply(from, '[Aguarde...]', id);
 						const cidade = body.slice(7);
-						fetch(`http://api.weatherapi.com/v1/current.json?key=${weatherAPIKEY}&q=${cidade}&lang=pt`)
-									.then((response) => response.json())
-									.then((data) => {
-											//console.log(data);
-											let resultado = '*METEOROLOGIA*\n';
-											resultado += '*Cidade:* '+ data['location']['name'] + ' - ' + data['location']['region'] + ' - ' + data['location']['country'] +'\n';
-											resultado += '*Data/Hora:* ' + data['location']['localtime']+'\n';
-											resultado += '*Temperatura*: '+ data['current']['temp_c'] +'Cº\n';
-											resultado += '*Sensação Térmica:* '+ data['current']['feelslike_c'] +'Cº\n';
-											resultado += '*Humidade:* '+ data['current']['humidity'] +'\%\n';
-											resultado += '*Céu:* ' + data['current']['condition']['text'] +'\n'; 
-											client.sendText(from,resultado); 
-									})
-									.catch((err) => {console.log(err); client.sendText(from,err);});
-						
-						/* 		let resultado = '*PREVISÃO DO TEMPO*\n';
-								resultado += '*Cidade:* '+ JSONObj['location']['name'] +'\n';
-								//resultado += '*Dia:* ' + JSONObj.current.day+'\n';
-								//resultado += '*Temperatura*: '+ JSONObj.current.temperature +'Cº\n';
-								//resultado += '*Sensação Térmica:* '+ JSONObj.current.feelslike +'Cº\n';
-								//resultado += '*Humidade:* '+ JSONObj.current.humidity +'\%\n';
-								//resultado += '*Ventos:* ' + JSONObj.current.winddisplay +'\n';
-								client.sendText(from,resultado); */
-					
-					//}/* else if (args.length === 3) {
-								/* const cidade = args[1];
-								const dias = args[2];
-								fetch(
-										`http://api.weatherapi.com/v1/forecast.json?key=${weatherAPIKEY}&q=${cidade}&days=${dias}&lang=pt`
-									)
-										.then((response) => response.json())
-										.then((data) => console.log(data.forecast.forecastday[0]))
-										.catch((err) => console.log(err));
-								
-								client.sendText(from,'Forecast not yet available');
+						if(is.Location(cidade)){
+							(async() => {    
+								browser = await puppeteer.launch();
+								page = await browser.newPage();
+								try{
+									let forecastHTML = `file://${__dirname}/lib/forecast/forecast.html?location=${cidade}`;
+									console.log(forecastHTML);
+									await page.goto(forecastHTML, {"waitUntil" : "networkidle0"});
+									await page.waitForSelector('div.horizontalweatherForecast');
+									
+									widgetElement =  await page.$('.horizontalweatherForecast');
+									if (widgetElement) {
+											try{
+												widgetElement.screenshot({
+																	path: `./media/forecast.png`,
+																	omitBackground: true,
+																});
+											}catch(e) {
+												console.log( `Couldn't take a screenshot of the element with the index of: ${ widgetElement }. Reason: `, e );
+											}
+									} 
+									
+								}catch(e){
+									console.log(e);
 								}
-								else {
-									client.sendText(from,'Comando errado.');
-								} */
-						
+								//await browser.close();
+							})();
+							await sleep(10000);
+							client.sendFile(from, './media/forecast.png', 'previsao.png', '', id);
+							await browser.close();
+						}else client.sendText(from,'PAÍS INVÁLIDO! SOMENTE PARA CANADÁ E BRASIL.');
+					} else client.sendText(from,'Formato de pesquisa inválido! SOMENTE PARA CANADÁ E BRASIL. Formato deve ser \'Cidade,Estado/Provincia(sigla),Pais(sigla)\' ');
 				break
 			
 // ######################################################################################################
@@ -570,13 +568,13 @@ module.exports = msgHandler = async (client, message) => {
 						}
 				}
 				break
-			case '!teste':
+			/* case '!teste':
 				if (args.length === 1) return client.reply(from, 'Send command *!4chan [link]*', id)
 				if (args.length === 2) {
 					   const urlteste = body.split(' ')[1]
 					   client.sendFileFromUrl(from, urlteste, 'video.webm', '')
 				}
-				break
+				break */
 // ######################################################################################################				
 // ######################################################################################################
 // #################################     LOTERIAS     ###################################################
